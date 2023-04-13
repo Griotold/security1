@@ -18,6 +18,8 @@ public class User {
     private String password;
     private String email;
     private String role;
+    private String provider; // "google"
+    private String providerId; // google의 DB_id // 106842467834513592196
     @CreationTimestamp
     private Timestamp createdDate;
 }

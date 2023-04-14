@@ -80,8 +80,10 @@ public class IndexController {
         return "redirect:/loginForm";
     }
 
+    // 폼로그인, Oauth 모두 처리가 가능하다.
     @GetMapping("/user")
-    public @ResponseBody String user(){
+    public @ResponseBody String user(@AuthenticationPrincipal PrincipalDetails principalDetails){
+        System.out.println("principalDetails.getUser() = " + principalDetails.getUser());
         return "user";
     }
 

@@ -8,6 +8,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 
 // Security Session => Authentication => UserDetails (PrincipalDetails)
@@ -16,13 +17,23 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
 
     private User user; // composition
 
+    private Map<String, Object> attributes;
+
+    // 일반 로그인할 때 사용하는 생성자.
     public PrincipalDetails(User user) {
         this.user = user;
     }
 
+    // OAuth 로그인할 때 사용하는 생성자
+    public PrincipalDetails(User user, Map<String, Object> attributes) {
+        this.user = user;
+        this.attributes = attributes;
+    }
+
+
     @Override
     public Map<String, Object> getAttributes() {
-        return null;
+        return attributes;
     }
     @Override
     public String getName() {
@@ -32,16 +43,17 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
     // 권한을 리턴하는 함수
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Collection<GrantedAuthority> collect = new ArrayList<>();
-        // 자바 8 방식을 사용해도 되는데 아직 공부가 부족하니 이대로 가자.
-        // return Collections.singletonList(() -> user.getRole());
-        collect.add(new GrantedAuthority() {
-            @Override
-            public String getAuthority() {
-                return user.getRole();
-            }
-        });
-        return collect;
+//        Collection<GrantedAuthority> collect = new ArrayList<>();
+//        // 자바 8 방식을 사용해도 되는데 아직 공부가 부족하니 이대로 가자.
+//
+//        collect.add(new GrantedAuthority() {
+//            @Override
+//            public String getAuthority() {
+//                return user.getRole();
+//            }
+//        });
+//        return collect;
+        return Collections.singletonList(() -> user.getRole());
     }
 
     @Override
